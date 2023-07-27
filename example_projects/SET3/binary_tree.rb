@@ -1,13 +1,20 @@
+# The code will build a binary search tree from an array of random numbers, 
+# confirm if the tree is balanced, print all elements in various orders, 
+# add some numbers greater than 100 to unbalance the tree, 
+# confirm if the tree is unbalanced, and then rebalance the tree using the rebalance method. 
+
 class Node
     include Comparable
     attr_accessor :data, :left, :right
   
+    # initialize a new Node with the given data
     def initialize(data)
       @data = data
       @left = nil
       @right = nil
     end
   
+    # Compare nodes based on data
     def <=>(other)
       @data <=> other.data
     end
@@ -16,11 +23,13 @@ class Node
   class Tree
     attr_accessor :root
   
+    # initialize a new Tree with the given array of numbers
     def initialize(arr)
       arr = arr.uniq.sort
       @root = build_tree(arr)
     end
   
+    # build balanced bst
     def build_tree(arr)
       return nil if arr.empty?
   
@@ -31,6 +40,7 @@ class Node
       root
     end
   
+    # insert value into bst
     def insert(value, node = @root)
       return Node.new(value) if node.nil?
   
@@ -42,6 +52,7 @@ class Node
       node
     end
   
+    # delete value from bst
     def delete(value, node = @root)
       return node if node.nil?
   
@@ -60,6 +71,7 @@ class Node
       node
     end
   
+    # find node w/ given value in bst
     def find(value, node = @root)
       return nil if node.nil?
   
@@ -72,6 +84,7 @@ class Node
       end
     end
   
+    # breadth-first level order
     def level_order
         return [] if @root.nil?
       
@@ -86,6 +99,7 @@ class Node
         block_given? ? nil : result
     end
   
+    # inorder traversal
     def inorder(node = @root, &block)
       return if node.nil?
   
@@ -94,6 +108,7 @@ class Node
       inorder(node.right, &block)
     end
   
+    # preorder traversal
     def preorder(node = @root, &block)
       return if node.nil?
   
@@ -102,6 +117,7 @@ class Node
       preorder(node.right, &block)
     end
   
+    # postorder traversal
     def postorder(node = @root, &block)
       return if node.nil?
   
@@ -110,6 +126,7 @@ class Node
       block_given? ? yield(node) : puts(node.data)
     end
   
+    # height of node in bst
     def height(node = @root)
       return -1 if node.nil?
   
@@ -118,6 +135,7 @@ class Node
       [left_height, right_height].max + 1
     end
   
+    # depth of node in bst
     def depth(node)
       return -1 if node.nil?
   
@@ -136,6 +154,7 @@ class Node
       nil
     end
   
+    # check if tree is balanced
     def balanced?(node = @root)
       return true if node.nil?
   
@@ -146,6 +165,7 @@ class Node
       balanced && balanced?(node.left) && balanced?(node.right)
     end
   
+    # rebalance tree
     def rebalance
       arr = level_order.map(&:data)
       @root = build_tree(arr)
@@ -153,6 +173,7 @@ class Node
   
     private
   
+    # find min node
     def find_min(node)
       current_node = node
       current_node = current_node.left while current_node.left
